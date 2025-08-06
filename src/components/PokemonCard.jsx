@@ -4,23 +4,30 @@ const PokemonCard = ({ pokemon, toggleCollection, isInCollection }) => {
   const { name, sprites, types, stats } = pokemon;
   const imageUrl = sprites?.other?.["official-artwork"]?.front_default;
 
-
-const hp = stats?.find(s => s.stat.name === "hp")?.base_stat ?? 0;
-const attack = stats?.find(s => s.stat.name === "attack")?.base_stat ?? 0;
-const defense = stats?.find(s => s.stat.name === "defense")?.base_stat ?? 0;
-
+  const hp = stats?.find((s) => s.stat.name === "hp")?.base_stat ?? 0;
+  const attack = stats?.find((s) => s.stat.name === "attack")?.base_stat ?? 0;
+  const defense = stats?.find((s) => s.stat.name === "defense")?.base_stat ?? 0;
 
   return (
     <div style={styles.card}>
-      <button style={styles.button(isInCollection)} onClick={() => toggleCollection(pokemon)}>
+      <button
+        style={styles.button(isInCollection)}
+        onClick={() => toggleCollection(pokemon)}
+      >
         {isInCollection ? "✕" : "+"}
       </button>
 
       <div style={styles.iconWrapper}>
-        <img src={imageUrl} alt={name} style={{ width: "70px", height: "70px" }} />
+        <img
+          src={imageUrl}
+          alt={name}
+          style={{ width: "70px", height: "70px" }}
+        />
       </div>
 
-      <h3 style={styles.name}>{name.charAt(0).toUpperCase() + name.slice(1)}</h3>
+      <h3 style={styles.name}>
+        {name.charAt(0).toUpperCase() + name.slice(1)}
+      </h3>
 
       <div style={styles.types}>
         {types.map(({ type }) => (

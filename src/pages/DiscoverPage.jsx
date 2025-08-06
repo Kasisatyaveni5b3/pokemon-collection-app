@@ -1,39 +1,38 @@
-import React, { useEffect, useRef } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import PokemonCard from '../components/PokemonCard';
-import { useCollection } from '../context/CollectionContext';
-import '../styles/DiscoverPage.css';
+import React, { useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import axios from "axios";
+import PokemonCard from "../components/PokemonCard";
+import { useCollection } from "../context/CollectionContext";
+import "../styles/DiscoverPage.css";
 
 const fetchPokemons = async ({ pageParam = 0 }) => {
-  const res = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${pageParam}&limit=20`);
+  const res = await axios.get(
+    `https://pokeapi.co/api/v2/pokemon?offset=${pageParam}&limit=20`
+  );
   const data = res.data;
 
   const detailed = await Promise.all(
-    data.results.map(p => axios.get(p.url).then(res => res.data))
+    data.results.map((p) => axios.get(p.url).then((res) => res.data))
   );
 
   return {
     results: detailed,
     nextOffset: pageParam + 20,
-    hasNext: !!data.next
+    hasNext: !!data.next,
   };
 };
 
 export default function DiscoverPage() {
-  const { collection, toggleCollection  } = useCollection();
+  const { collection, toggleCollection } = useCollection();
   const bottomRef = useRef();
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['pokemons'],
-    queryFn: fetchPokemons,
-    getNextPageParam: (lastPage) => lastPage.hasNext ? lastPage.nextOffset : undefined,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["pokemons"],
+      queryFn: fetchPokemons,
+      getNextPageParam: (lastPage) =>
+        lastPage.hasNext ? lastPage.nextOffset : undefined,
+    });
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -50,10 +49,8 @@ export default function DiscoverPage() {
     };
   }, [fetchNextPage, hasNextPage]);
 
-const isInCollection = (pokemon) =>
-  collection.some((p) => p.name === pokemon.name);
-console.log('🎯 Collection in DiscoverPage:', collection);
-
+  const isInCollection = (pokemon) =>
+    collection.some((p) => p.name === pokemon.name);
 
   return (
     <div className="custom-scroll-page">
@@ -64,7 +61,7 @@ console.log('🎯 Collection in DiscoverPage:', collection);
               <PokemonCard
                 key={pokemon.name}
                 pokemon={pokemon}
-                toggleCollection={toggleCollection }
+                toggleCollection={toggleCollection}
                 isInCollection={isInCollection(pokemon)}
               />
             ))}
@@ -73,7 +70,9 @@ console.log('🎯 Collection in DiscoverPage:', collection);
       </div>
       <div ref={bottomRef} className="loader-trigger" />
       {isFetchingNextPage && (
-        <p className="text-center text-gray-500 mt-4">Loading more Pokémon...</p>
+        <p className="text-center text-gray-500 mt-4">
+          Loading more Pokémon...
+        </p>
       )}
     </div>
   );

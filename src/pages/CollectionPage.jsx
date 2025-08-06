@@ -1,6 +1,5 @@
 import React from "react";
 import { useCollection } from "../context/CollectionContext";
-import PokemonCard from "../components/PokemonCard";
 
 import {
   DragDropContext,

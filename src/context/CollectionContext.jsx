@@ -14,16 +14,14 @@ function CollectionProvider({ children }) {
       try {
         const parsed = JSON.parse(stored);
         setCollection(parsed);
-        console.log("📦 Loaded collection from localStorage:", parsed);
       } catch (e) {
-        console.error("⚠️ Failed to parse collection:", e);
+        console.error("Failed to parse collection:", e);
       }
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("myCollection", JSON.stringify(collection));
-    console.log("🔄 Saved collection to localStorage:", collection);
   }, [collection]);
 
   const normalizePokemon = (pokemon) => {
@@ -47,7 +45,7 @@ function CollectionProvider({ children }) {
     const updated = [...collection, normalized];
     setCollection(updated);
     localStorage.setItem("pokemon-collection", JSON.stringify(updated));
-    alert(`${pokemon.name} added to collection ✅`);
+    alert(`${pokemon.name} added to collection`);
   };
 
   const toggleCollection = (pokemon) => {
@@ -57,7 +55,7 @@ function CollectionProvider({ children }) {
       const updated = collection.filter((p) => p.name !== pokemon.name);
       setCollection(updated);
       localStorage.setItem("pokemon-collection", JSON.stringify(updated));
-      alert(`${pokemon.name} removed from collection ❌`);
+      alert(`${pokemon.name} removed from collection`);
     } else {
       const hp =
         pokemon.stats?.find((s) => s.stat.name === "hp")?.base_stat ??
@@ -84,7 +82,7 @@ function CollectionProvider({ children }) {
       const updated = [...collection, newPokemon];
       setCollection(updated);
       localStorage.setItem("collection", JSON.stringify(updated));
-      alert(`${pokemon.name} added to collection ✅`);
+      alert(`${pokemon.name} added to collection`);
     }
   };
 
