@@ -21,7 +21,7 @@ const fetchPokemons = async ({ pageParam = 0 }) => {
 };
 
 export default function DiscoverPage() {
-  const { collection, addToCollection } = useCollection();
+  const { collection, toggleCollection  } = useCollection();
   const bottomRef = useRef();
 
   const {
@@ -64,7 +64,7 @@ console.log('🎯 Collection in DiscoverPage:', collection);
               <PokemonCard
                 key={pokemon.name}
                 pokemon={pokemon}
-                toggleCollection={addToCollection}
+                toggleCollection={toggleCollection }
                 isInCollection={isInCollection(pokemon)}
               />
             ))}
